@@ -49,7 +49,7 @@ Leé también `guia-sitio-nuevo.md`: las reglas de ahí valen para este repo.
 - [x] Repo en GitHub (IchBinAb4los/darior, privado) y primer push
 - [x] Proyecto de Cloudflare Pages `rubendariorojas` andando en https://rubendariorojas.pages.dev (rama `trunk`)
 - [x] Dominio agregado en Cloudflare y nameservers cambiados en Namecheap
-- [ ] Dominio propio en Pages + redirección de `www` + Always Use HTTPS
+- [x] Dominio propio en Pages (con y sin `www`) + Redirect Rule `www a principal` (301, conserva ruta y query) + HTTP→HTTPS
 - [ ] Search Console, sitemap e indexación
 - [ ] Perfil de Empresa de Google
 
