@@ -44,6 +44,7 @@ Leé también `guia-sitio-nuevo.md`: las reglas de ahí valen para este repo.
 ## Publicación
 
 - Dominio: **rubendariorojas.com** (comprado en Namecheap). Dirección principal sin `www`; `www` redirige con 301.
+- Nameservers de Cloudflare (cargados en Namecheap → Custom DNS): `paul.ns.cloudflare.com` y `saanvi.ns.cloudflare.com`. Se borraron los registros de parking y de reenvío de correo de Namecheap.
 - Camino: GitHub → Cloudflare Pages (rama de producción `trunk`, sin build) → DNS en Cloudflare → dominio propio y HTTPS → Search Console. Detalle en la sección 4 de `guia-sitio-nuevo.md`.
 - [x] Repo en GitHub (IchBinAb4los/darior, privado) y primer push
 - [x] Proyecto de Cloudflare Pages `rubendariorojas` andando en https://rubendariorojas.pages.dev (rama `trunk`)
