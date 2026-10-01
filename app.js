@@ -1,15 +1,14 @@
 /* =====================================================================
    DATOS EDITABLES
-   Para cambiar teléfono, zona, horario, redes o fotos, tocá solo esto.
+   Para cambiar teléfono, horario, redes o fotos, tocá solo esto.
+   (La zona de trabajo está escrita en index.html para que la lea Google.)
    ===================================================================== */
 
 const NEGOCIO = {
   // Número para WhatsApp y llamadas: código de país + 9 + área + número, sin espacios ni signos.
-  telefono: "5491100000000", // PENDIENTE: número real
+  telefono: "5491156970035",
   // Cómo se lee el número en la página.
-  telefonoVisible: "11 0000-0000",
-  // Ej.: "Zona Oeste y CABA". Si queda vacío, no se muestra.
-  zona: "",
+  telefonoVisible: "11 5697-0035",
   // Ej.: "Lunes a sábado, de 8 a 19". Si queda vacío, no se muestra.
   horario: "",
   // Ej.: { nombre: "Instagram", url: "https://instagram.com/..." }
@@ -80,11 +79,6 @@ function completarDatos() {
   $$(".js-tel-visible").forEach((el) => (el.textContent = NEGOCIO.telefonoVisible));
   $$(".js-anio").forEach((el) => (el.textContent = new Date().getFullYear()));
 
-  if (NEGOCIO.zona) {
-    $$(".js-zona-frase").forEach((el) => (el.textContent = ` de ${NEGOCIO.zona}`));
-    $$(".js-zona").forEach((el) => (el.textContent = NEGOCIO.zona));
-    $$(".js-dato-zona").forEach((el) => (el.hidden = false));
-  }
   if (NEGOCIO.horario) {
     $$(".js-horario").forEach((el) => (el.textContent = NEGOCIO.horario));
     $$(".js-dato-horario").forEach((el) => (el.hidden = false));
@@ -108,10 +102,43 @@ function completarDatos() {
   }
 }
 
+/* ---- Animaciones al hacer scroll ----
+   Cada elemento con .rv aparece una sola vez cuando entra en pantalla.
+   Los hijos de .rv-grupo aparecen uno detrás de otro.
+   Si la persona pidió menos movimiento, no se anima nada. */
+let observador = null;
+
+function revelar(el, orden = 0) {
+  if (!observador) return;
+  el.classList.add("rv");
+  el.style.setProperty("--i", orden);
+  observador.observe(el);
+}
+
+function prepararAnimaciones() {
+  const menosMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (menosMovimiento || !("IntersectionObserver" in window)) return;
+
+  observador = new IntersectionObserver(
+    (entradas) => {
+      entradas.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("visto");
+        observador.unobserve(e.target);
+      });
+    },
+    { rootMargin: "0px 0px -10% 0px" }
+  );
+  document.documentElement.classList.add("anim");
+
+  $$(".rv-grupo").forEach((grupo) => [...grupo.children].forEach((hijo, i) => revelar(hijo, i)));
+  $$(".rv").forEach((el) => observador.observe(el));
+}
+
 /* ---- Galería ---- */
 const galeria = { filtro: "todos", todas: false, visibles: [] };
 
-function dibujarGaleria() {
+function dibujarGaleria(sinAnimarHasta = 0) {
   const lista = $("#galeria");
   const botonMas = $("#ver-mas");
   if (!lista) return;
@@ -133,13 +160,18 @@ function dibujarGaleria() {
     img.height = 800;
     img.loading = "lazy";
     img.decoding = "async";
+    const marco = document.createElement("span");
+    marco.className = "galeria-marco";
+    marco.append(img);
     const texto = document.createElement("span");
+    texto.className = "galeria-titulo";
     texto.textContent = t.titulo;
     texto.setAttribute("aria-hidden", "true");
-    boton.append(img, texto);
+    boton.append(marco, texto);
     boton.addEventListener("click", () => abrirVisor(i));
     li.append(boton);
     lista.append(li);
+    if (i >= sinAnimarHasta) revelar(li, (i - sinAnimarHasta) % 4);
   });
 
   const quedan = filtradas.length - galeria.visibles.length;
@@ -159,7 +191,7 @@ function prepararGaleria() {
   $("#ver-mas")?.addEventListener("click", () => {
     const primeraNueva = galeria.visibles.length;
     galeria.todas = true;
-    dibujarGaleria();
+    dibujarGaleria(primeraNueva);
     $$("#galeria button")[primeraNueva]?.focus();
   });
   dibujarGaleria();
@@ -253,6 +285,7 @@ function prepararConsulta() {
 }
 
 completarDatos();
+prepararAnimaciones();
 prepararGaleria();
 prepararVisor();
 prepararConsulta();

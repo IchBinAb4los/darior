@@ -116,7 +116,7 @@ def og_image():
     lienzo.paste(foto, (680, 0))
     d = ImageDraw.Draw(lienzo)
     d.rectangle((0, 0, 680, 14), fill=AMARILLO)
-    d.text((64, 70), "RUBÉN DARÍO ROJAS", font=fuente(40), fill=AMARILLO)
+    d.text((64, 70), "RUBÉN DARÍO ROJAS · MERLO, ZONA OESTE", font=fuente(40), fill=AMARILLO)
     titulo = fuente(96)
     for i, linea in enumerate(["HERRERÍA", "CERRAJERÍA", "PINTURA", "REFRIGERACIÓN"]):
         d.text((60, 128 + i * 92), linea, font=titulo, fill=PAPEL)
