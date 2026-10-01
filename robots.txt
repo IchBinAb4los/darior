@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /originales/
+Disallow: /herramientas/
+
+Sitemap: https://rubendariorojas.com.ar/sitemap.xml

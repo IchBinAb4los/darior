@@ -27,7 +27,12 @@ Leé también `guia-sitio-nuevo.md`: las reglas de ahí valen para este repo.
 - `img/trabajos/` — fotos de la galería en WebP 800×800; `img/trabajos/grande/` las mismas para el visor (lado largo 1400).
 - `img/antes-despues/` — pares en 4:5. `img/hero.webp`, `img/og-image.jpg` (1200×630), favicons en `img/icons/`.
 - `originales/` — fotos tal como llegaron por WhatsApp. No se publican en la página, pero quedan en el repo.
+- `robots.txt`, `sitemap.xml`, `site.webmanifest`, `favicon.ico`.
 - `herramientas/fotos.py` — genera todas las imágenes desde `originales/` (necesita Pillow). Para agregar una foto: sumala a la lista del script, correlo y agregala a `TRABAJOS` en `app.js`.
+
+## Probar
+
+`python -m http.server 8080` en la raíz (o la configuración `sitio` de `.claude/launch.json`) y abrir http://localhost:8080. Los botones de WhatsApp y teléfono los completa `app.js`; en el HTML quedan apuntando a `#contacto` como respaldo.
 
 ## Datos repetidos (cambiar en todos lados)
 
