@@ -3,4 +3,4 @@ Allow: /
 Disallow: /originales/
 Disallow: /herramientas/
 
-Sitemap: https://rubendariorojas.com.ar/sitemap.xml
+Sitemap: https://rubendariorojas.com/sitemap.xml

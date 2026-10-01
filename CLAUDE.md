@@ -41,10 +41,20 @@ Leé también `guia-sitio-nuevo.md`: las reglas de ahí valen para este repo.
 - Dominio: `index.html` (canonical, Open Graph, Twitter, JSON-LD), `robots.txt`, `sitemap.xml`.
 - Zona: va escrita en `index.html` (no en `app.js`) para que la lea Google: `title`, `description`, Open Graph, Twitter, JSON-LD (`address`, `areaServed`), bajada de la portada, `.portada-zona`, sección `#zona`, dato "Zona" de contacto y pie. También en la imagen para compartir (`herramientas/fotos.py`).
 
+## Publicación
+
+- Dominio: **rubendariorojas.com** (comprado en Namecheap). Dirección principal sin `www`; `www` redirige con 301.
+- Camino: GitHub → Cloudflare Pages (rama de producción `trunk`, sin build) → DNS en Cloudflare → dominio propio y HTTPS → Search Console. Detalle en la sección 4 de `guia-sitio-nuevo.md`.
+- [ ] Repo en GitHub y primer push
+- [ ] Proyecto de Cloudflare Pages andando en `*.pages.dev`
+- [ ] Dominio agregado en Cloudflare y nameservers cambiados en Namecheap
+- [ ] Dominio propio en Pages + redirección de `www` + Always Use HTTPS
+- [ ] Search Console, sitemap e indexación
+- [ ] Perfil de Empresa de Google
+
 ## Pendientes
 
 - [ ] Confirmar la lista de localidades de la sección `#zona` (hoy: Merlo, Padua, Moreno, Ituzaingó, Morón, Castelar, Haedo, Hurlingham, La Matanza, Tres de Febrero, General Rodríguez y Capital Federal).
-- [ ] **Dominio**: comprarlo y reemplazar el provisorio `rubendariorojas.com.ar` en los archivos de arriba.
 - [ ] Confirmar con Rubén la lista de servicios de cada oficio y cómo nombra su título de refrigeración.
 - [ ] Redes sociales (si tiene) en `NEGOCIO.redes` y en `sameAs`.
 - [ ] Horario de atención.
