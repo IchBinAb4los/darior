@@ -35,6 +35,10 @@ Leé también `guia-sitio-nuevo.md`: las reglas de ahí valen para este repo.
 
 `python -m http.server 8080` en la raíz (o la configuración `sitio` de `.claude/launch.json`) y abrir http://localhost:8080. Los botones de WhatsApp y teléfono los completa `app.js`; en el HTML quedan apuntando a `#contacto` como respaldo.
 
+## Caché
+
+Cloudflare manda `styles.css` y `app.js` con 4 horas de caché en el navegador; el HTML va siempre fresco. Por eso `index.html` los pide con versión (`/styles.css?v=AAAA-MM-DD`, `/app.js?v=AAAA-MM-DD`). **Cada vez que cambies `styles.css` o `app.js`, cambiá la versión en `index.html`** (fecha del día, y una letra si hay más de un cambio en el mismo día: `2026-10-03b`). Si no, quien ya entró ve el HTML nuevo con el CSS/JS viejo. Las imágenes y videos nuevos van con nombre nuevo; si se reemplaza uno con el mismo nombre, pasa lo mismo.
+
 ## Datos repetidos (cambiar en todos lados)
 
 - Teléfono (+54 9 11 5697-0035): `app.js` (`NEGOCIO.telefono` y `telefonoVisible`), el JSON-LD de `index.html` y el texto de respaldo de los `.js-tel-visible` en `index.html`.
