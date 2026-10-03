@@ -1,6 +1,7 @@
 """Genera las imágenes del sitio a partir de originales/.
 
-Uso:  python herramientas/fotos.py   (desde la raíz del repo, necesita Pillow)
+Uso:  python herramientas/fotos.py   (desde la raíz del repo, necesita Pillow;
+      para la cocina también imageio-ffmpeg, que trae ffmpeg)
 
 Cada foto se recorta alrededor de un punto de interés (fx, fy entre 0 y 1).
 """
@@ -54,6 +55,15 @@ PARES = {
     "cartel-despues":  ("19.08.39.jpeg", 0.5, 0.36),
 }
 
+# Cocina (fotos del 2026-10-03, sacadas torcidas, y video del antes).
+# slug: (archivo, grados para enderezar, fx, fy) — fx/fy sobre la foto ya enderezada
+COCINA_FOTOS = {
+    "cocina-revestimiento": ("WhatsApp Image 2026-10-03 at 15.21.03.jpeg", 50, 0.50, 0.50),
+    "cocina-mesada":        ("WhatsApp Image 2026-10-03 at 15.21.04.jpeg", 47, 0.44, 0.40),
+}
+COCINA_VIDEO = "WhatsApp Video 2026-10-03 at 15.21.04.mp4"
+COCINA_ANTES_SEGUNDO = 5.17  # cuadro nítido con el boquete y la llave de paso en el medio
+
 AMARILLO = (255, 194, 26)
 HIERRO = (23, 24, 26)
 PAPEL = (243, 240, 232)
@@ -102,6 +112,76 @@ def pares():
     for slug, (archivo, fx, fy) in PARES.items():
         im = recortar(abrir(archivo), 4 / 5, fx, fy).resize((800, 1000), Image.LANCZOS)
         print(f"{slug:26} {guardar(im, IMG / 'antes-despues' / f'{slug}.webp'):4} KB")
+
+
+def enderezar(im, grados):
+    """Gira la foto y devuelve también una máscara de la parte que tiene imagen."""
+    girada = im.rotate(grados, resample=Image.BICUBIC, expand=True)
+    mascara = Image.new("L", im.size, 255).rotate(grados, resample=Image.NEAREST, expand=True)
+    return girada, mascara
+
+
+def recortar_dentro(im, mascara, proporcion, fx, fy):
+    """El recorte más grande de esa proporción, centrado en (fx, fy), sin esquinas vacías."""
+    w, h = im.size
+    cx, cy = fx * w, fy * h
+    chico, grande = 10, max(w, h)
+    while grande - chico > 2:
+        ancho = (chico + grande) / 2
+        caja = (round(cx - ancho / 2), round(cy - ancho / proporcion / 2),
+                round(cx + ancho / 2), round(cy + ancho / proporcion / 2))
+        dentro = caja[0] >= 0 and caja[1] >= 0 and caja[2] <= w and caja[3] <= h
+        if dentro and mascara.crop(caja).getextrema()[0] == 255:
+            chico, mejor = ancho, caja
+        else:
+            grande = ancho
+    return im.crop(mejor)
+
+
+def ffmpeg():
+    import imageio_ffmpeg  # pip install imageio-ffmpeg
+    return imageio_ffmpeg.get_ffmpeg_exe()
+
+
+def cocina():
+    import subprocess, tempfile
+
+    for slug, (archivo, grados, fx, fy) in COCINA_FOTOS.items():
+        girada, mascara = enderezar(ImageOps.exif_transpose(Image.open(ORIG / archivo)).convert("RGB"), grados)
+        chica = recortar_dentro(girada, mascara, 1, fx, fy)
+        lado = min(800, chica.width)
+        kb1 = guardar(chica.resize((lado, lado), Image.LANCZOS), IMG / "trabajos" / f"{slug}.webp")
+        grande = recortar_dentro(girada, mascara, 4 / 3, fx, fy)
+        kb2 = guardar(grande, IMG / "trabajos" / "grande" / f"{slug}.webp", 78)
+        print(f"{slug:26} {kb1:4} KB  grande {kb2:4} KB  ({chica.width}px / {grande.size})")
+
+    # Después: la foto de la bacha enderezada, en 4:5
+    archivo, grados, _, _ = COCINA_FOTOS["cocina-revestimiento"]
+    girada, mascara = enderezar(ImageOps.exif_transpose(Image.open(ORIG / archivo)).convert("RGB"), grados)
+    despues = recortar_dentro(girada, mascara, 4 / 5, 0.52, 0.50).resize((640, 800), Image.LANCZOS)
+    print(f"{'cocina-despues':26} {guardar(despues, IMG / 'antes-despues' / 'cocina-despues.webp'):4} KB")
+
+    # Antes: un cuadro del video
+    video = ORIG / COCINA_VIDEO
+    with tempfile.TemporaryDirectory() as tmp:
+        cuadro = Path(tmp) / "cuadro.png"
+        subprocess.run([ffmpeg(), "-v", "error", "-ss", str(COCINA_ANTES_SEGUNDO), "-i", str(video),
+                        "-frames:v", "1", str(cuadro)], check=True)
+        antes = Image.open(cuadro).convert("RGB")
+        antes.load()
+    corte = recortar(antes, 4 / 5, 0.5, 0.5).resize((640, 800), Image.LANCZOS)
+    print(f"{'cocina-antes':26} {guardar(corte, IMG / 'antes-despues' / 'cocina-antes.webp'):4} KB")
+    poster = antes.copy()
+    poster.thumbnail((720, 720), Image.LANCZOS)
+    print(f"{'cocina-antes-poster':26} {guardar(poster, IMG / 'antes-despues' / 'cocina-antes-video.webp', 72):4} KB")
+
+    # Video del antes: acelerado x2, sin sonido, liviano y listo para empezar a verse mientras baja
+    salida = IMG / "antes-despues" / "cocina-antes.mp4"
+    subprocess.run([ffmpeg(), "-v", "error", "-y", "-i", str(video), "-an",
+                    "-vf", "setpts=0.5*PTS,scale=720:-2", "-r", "30",
+                    "-c:v", "libx264", "-preset", "slow", "-crf", "28", "-pix_fmt", "yuv420p",
+                    "-movflags", "+faststart", str(salida)], check=True)
+    print(f"{'cocina-antes.mp4':26} {salida.stat().st_size // 1024:4} KB")
 
 
 def hero():
@@ -157,3 +237,4 @@ if __name__ == "__main__":
     hero()
     og_image()
     iconos()
+    cocina()

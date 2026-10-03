@@ -20,9 +20,10 @@ const NEGOCIO = {
 // Cuántas fotos se ven antes de tocar "Ver más trabajos".
 const FOTOS_INICIALES = 12;
 
-// foto: nombre del archivo en /img/trabajos/ (sin .webp). oficio: herreria | pintura | refrigeracion
+// foto: nombre del archivo en /img/trabajos/ (sin .webp). oficio: herreria | pintura | refrigeracion | arreglos
 const TRABAJOS = [
   { foto: "tinglado-chapa", oficio: "herreria", titulo: "Tinglado de chapa", alt: "Tinglado de chapa con estructura de hierro negra sobre la entrada de un edificio" },
+  { foto: "cocina-revestimiento", oficio: "arreglos", titulo: "Cocina: revestimiento nuevo", alt: "Pared de cocina revestida con azulejo blanco tipo subway, con la canilla y la llave de paso" },
   { foto: "pasillo-piso-verde", oficio: "pintura", titulo: "Pasillo: piso, revestimiento y paredes", alt: "Pasillo con piso pintado de verde, revestimiento gris y paredes blancas" },
   { foto: "split-instalado", oficio: "refrigeracion", titulo: "Instalación de split", alt: "Aire acondicionado split instalado en lo alto de una pared blanca" },
   { foto: "baranda-rampa", oficio: "herreria", titulo: "Barandas para rampa", alt: "Barandas de caño negras a los dos lados de una rampa pintada de verde" },
@@ -30,6 +31,7 @@ const TRABAJOS = [
   { foto: "cartel-numero", oficio: "herreria", titulo: "Cartel de numeración", alt: "Cartel con el número 6489 en hierro negro sobre fondo blanco" },
   { foto: "puerta-doble", oficio: "pintura", titulo: "Puerta doble", alt: "Puerta doble con vidrios, pintada de blanco" },
   { foto: "parrilla-brasero", oficio: "herreria", titulo: "Parrilla con brasero", alt: "Parrilla con brasero de ladrillo refractario y estructura de hierro" },
+  { foto: "cocina-mesada", oficio: "arreglos", titulo: "Cocina: mesada y azulejos", alt: "Esquina de la cocina con la pared revestida en azulejo blanco entre la mesada y las alacenas" },
   { foto: "split-pared", oficio: "refrigeracion", titulo: "Split con cañería por caño", alt: "Equipo split en la pared con la cañería llevada por caño metálico" },
   { foto: "rejas-metal-desplegado", oficio: "herreria", titulo: "Rejas con metal desplegado", alt: "Dos hojas de reja con metal desplegado, pintadas de negro" },
   { foto: "ascensor", oficio: "pintura", titulo: "Ascensor", alt: "Puertas y marco de ascensor pintados de gris grafito" },
@@ -246,6 +248,31 @@ function prepararVisor() {
   });
 }
 
+/* ---- Video del antes (se carga solo si lo piden) ---- */
+function prepararVideo() {
+  const boton = $("#ver-video-cocina");
+  const dialogo = $("#visor-video");
+  const video = $("#video-cocina");
+  if (!boton || !dialogo || !video) return;
+
+  if (typeof dialogo.showModal !== "function") {
+    boton.addEventListener("click", () => (window.location.href = video.getAttribute("src")));
+    return;
+  }
+  boton.addEventListener("click", () => {
+    dialogo.showModal();
+    $("#video-cerrar").focus();
+    video.currentTime = 0;
+    video.play().catch(() => {}); // si el navegador no deja reproducir solo, quedan los controles
+  });
+  $("#video-cerrar").addEventListener("click", () => dialogo.close());
+  dialogo.addEventListener("click", (e) => { if (e.target === dialogo) dialogo.close(); });
+  dialogo.addEventListener("close", () => {
+    video.pause();
+    boton.focus();
+  });
+}
+
 /* ---- Consulta por WhatsApp ---- */
 function prepararConsulta() {
   const form = $("#consulta");
@@ -288,4 +315,5 @@ completarDatos();
 prepararAnimaciones();
 prepararGaleria();
 prepararVisor();
+prepararVideo();
 prepararConsulta();

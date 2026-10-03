@@ -26,10 +26,10 @@ Leé también `guia-sitio-nuevo.md`: las reglas de ahí valen para este repo.
 - `styles.css` — estilos y tokens.
 - `app.js` — **datos editables arriba de todo** (teléfono, horario, redes, fotos de la galería) y la lógica (galería, filtros, visor, armado del mensaje de WhatsApp).
 - `img/trabajos/` — fotos de la galería en WebP 800×800; `img/trabajos/grande/` las mismas para el visor (lado largo 1400).
-- `img/antes-despues/` — pares en 4:5. `img/hero.webp`, `img/og-image.jpg` (1200×630), favicons en `img/icons/`.
+- `img/antes-despues/` — pares en 4:5 (la cocina en 640×800 porque el antes sale de un cuadro del video). `cocina-antes.mp4` es el video del antes acelerado ×2, sin sonido (338 KB); se abre solo si tocan "Ver el video del antes" (`preload="none"`), nunca en automático. `img/hero.webp`, `img/og-image.jpg` (1200×630), favicons en `img/icons/`.
 - `originales/` — fotos tal como llegaron por WhatsApp. No se publican en la página, pero quedan en el repo.
 - `robots.txt`, `sitemap.xml`, `site.webmanifest`, `favicon.ico`.
-- `herramientas/fotos.py` — genera todas las imágenes desde `originales/` (necesita Pillow). Para agregar una foto: sumala a la lista del script, correlo y agregala a `TRABAJOS` en `app.js`.
+- `herramientas/fotos.py` — genera todas las imágenes desde `originales/` (necesita Pillow; para la cocina también `pip install imageio-ffmpeg`, que trae ffmpeg). Las fotos sacadas torcidas se enderezan con `enderezar()` + `recortar_dentro()`. Para agregar una foto: sumala a la lista del script, correlo y agregala a `TRABAJOS` en `app.js`.
 
 ## Probar
 
@@ -50,7 +50,7 @@ Leé también `guia-sitio-nuevo.md`: las reglas de ahí valen para este repo.
 - [x] Proyecto de Cloudflare Pages `rubendariorojas` andando en https://rubendariorojas.pages.dev (rama `trunk`)
 - [x] Dominio agregado en Cloudflare y nameservers cambiados en Namecheap
 - [x] Dominio propio en Pages (con y sin `www`) + Redirect Rule `www a principal` (301, conserva ruta y query) + HTTP→HTTPS
-- [ ] Search Console, sitemap e indexación
+- [x] Search Console (propiedad de dominio verificada con Cloudflare), sitemap e indexación
 - [ ] Perfil de Empresa de Google
 
 ## Pendientes
@@ -60,4 +60,5 @@ Leé también `guia-sitio-nuevo.md`: las reglas de ahí valen para este repo.
 - [ ] Redes sociales (si tiene) en `NEGOCIO.redes` y en `sameAs`.
 - [ ] Horario de atención.
 - [ ] Fotos de cerrajería (hoy no hay ninguna).
+- [ ] Confirmar el texto del trabajo de la cocina ("reparé la pared y la revestí entera con azulejo blanco") y si también hizo el arreglo de las cañerías.
 - [ ] Perfil de Empresa de Google.

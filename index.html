@@ -72,7 +72,8 @@
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Herrería a medida: rejas, tinglados, barandas, parrillas, ménsulas y carteles" } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cerrajería: apertura de puertas y cambio o arreglo de cerraduras" } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pintura de interiores, exteriores, pisos, puertas y estructuras metálicas" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Refrigeración: instalación y service de aire acondicionado split" } }
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Refrigeración: instalación y service de aire acondicionado split" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Arreglos generales: revestimientos, azulejos y reparación de paredes" } }
       ]
     }
   }
@@ -216,12 +217,18 @@
                alt="Aire acondicionado split instalado en lo alto de una pared blanca">
         </li>
 
-        <li id="arreglos" class="oficio oficio-sin-foto rv">
+        <li id="arreglos" class="oficio rv">
           <span class="oficio-num" aria-hidden="true">05</span>
           <div class="oficio-cuerpo">
             <h3>Arreglos generales</h3>
             <p class="oficio-bajada">Lo que se rompió, lo que quedó a medio hacer, lo que nadie te quiso agarrar. Si no está en la lista, preguntame igual.</p>
+            <ul class="oficio-items">
+              <li>Revestimientos y azulejos</li>
+              <li>Paredes rotas o con humedad</li>
+            </ul>
           </div>
+          <img class="oficio-foto" src="/img/trabajos/cocina-mesada.webp" width="609" height="609" loading="lazy"
+               alt="Pared de cocina revestida con azulejo blanco tipo subway entre la mesada y las alacenas">
         </li>
       </ol>
     </section>
@@ -296,6 +303,27 @@
           </div>
           <figcaption><strong>Cartel de numeración.</strong> Números doblados a mano en hierro, soldados y pintados.</figcaption>
         </figure>
+
+        <figure class="par par-grande par-invertido rv">
+          <div class="par-fotos">
+            <div class="par-foto">
+              <img src="/img/antes-despues/cocina-antes.webp" width="640" height="800" loading="lazy"
+                   alt="Antes: pared de cocina con azulejos viejos y un boquete con las cañerías y la llave de paso a la vista">
+              <span class="etiqueta">Antes</span>
+            </div>
+            <div class="par-foto">
+              <img src="/img/antes-despues/cocina-despues.webp" width="640" height="800" loading="lazy"
+                   alt="Después: la misma pared revestida con azulejo blanco tipo subway, con la llave de paso y la canilla en su lugar">
+              <span class="etiqueta etiqueta-despues">Después</span>
+            </div>
+          </div>
+          <figcaption>
+            <strong>Cocina.</strong> La pared estaba rota a la altura de las llaves de paso y los azulejos ya no daban más. Reparé la pared y la revestí entera con azulejo blanco.
+            <button type="button" class="ver-video" id="ver-video-cocina">
+              <span class="ver-video-icono" aria-hidden="true"></span>Ver el video del antes <span class="ver-video-duracion">8 s</span>
+            </button>
+          </figcaption>
+        </figure>
       </div>
     </section>
 
@@ -310,6 +338,7 @@
           <button type="button" class="filtro" data-filtro="herreria" aria-pressed="false">Herrería</button>
           <button type="button" class="filtro" data-filtro="pintura" aria-pressed="false">Pintura</button>
           <button type="button" class="filtro" data-filtro="refrigeracion" aria-pressed="false">Refrigeración</button>
+          <button type="button" class="filtro" data-filtro="arreglos" aria-pressed="false">Arreglos</button>
         </div>
       </div>
       <ul class="galeria" id="galeria" aria-live="polite"></ul>
@@ -444,6 +473,15 @@
     <button type="button" class="visor-btn visor-cerrar" id="visor-cerrar" aria-label="Cerrar">×</button>
     <button type="button" class="visor-btn visor-ant" id="visor-ant" aria-label="Foto anterior">‹</button>
     <button type="button" class="visor-btn visor-sig" id="visor-sig" aria-label="Foto siguiente">›</button>
+  </dialog>
+
+  <dialog class="visor" id="visor-video" aria-label="Video del antes de la cocina">
+    <figure>
+      <video id="video-cocina" src="/img/antes-despues/cocina-antes.mp4" poster="/img/antes-despues/cocina-antes-video.webp"
+             width="720" height="410" controls muted playsinline preload="none"></video>
+      <figcaption>Cocina, antes del arreglo · acelerado ×2</figcaption>
+    </figure>
+    <button type="button" class="visor-btn visor-cerrar" id="video-cerrar" aria-label="Cerrar">×</button>
   </dialog>
 
   <script src="/app.js" defer></script>

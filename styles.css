@@ -227,6 +227,17 @@ button, input, textarea { font: inherit; color: inherit; }
 .etiqueta-despues { background: var(--amarillo); color: var(--sobre-amarillo); }
 .par figcaption { margin-top: 14px; color: #d9d4c8; max-width: 52ch; }
 .par figcaption strong { color: var(--claro); font-family: var(--fuente-titulo); font-size: 1.25rem; text-transform: uppercase; letter-spacing: .02em; }
+.ver-video {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 48px; margin-top: 18px; padding: 10px 18px 10px 14px;
+  border: 2px solid var(--amarillo); background: transparent; color: var(--amarillo);
+  font: 800 1.1rem/1 var(--fuente-titulo); letter-spacing: .04em; text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.ver-video:hover { background: var(--amarillo); color: var(--sobre-amarillo); }
+.ver-video-icono { width: 0; height: 0; border-style: solid; border-width: 7px 0 7px 12px; border-color: transparent transparent transparent currentColor; }
+.ver-video-duracion { font-weight: 600; opacity: .8; }
 
 /* ===== Trabajos ===== */
 .encabezado-fila { display: grid; gap: 24px; }
@@ -375,6 +386,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .visor::backdrop { background: rgba(10, 10, 11, .9); }
 .visor figure { margin: 0; padding: 64px 16px 24px; display: grid; justify-items: center; gap: 14px; max-width: 1100px; }
 .visor img { max-height: calc(100vh - 160px); max-height: calc(100dvh - 160px); width: auto; object-fit: contain; }
+.visor video { display: block; width: min(100%, 960px); height: auto; max-height: calc(100dvh - 160px); background: #000; }
 .visor figcaption { font: 600 1.2rem/1.2 var(--fuente-titulo); text-transform: uppercase; letter-spacing: .04em; }
 .visor-btn {
   position: fixed; display: grid; place-items: center;
@@ -433,6 +445,8 @@ button, input, textarea { font: inherit; color: inherit; }
   .par-grande { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; align-items: end; }
   .par-grande figcaption { margin: 0; font-size: 1.15rem; }
   .par-grande figcaption strong { display: block; font-size: 2.4rem; line-height: 1; margin-bottom: 10px; }
+  .par-invertido { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+  .par-invertido figcaption { order: -1; }
 
   .encabezado-fila { grid-template-columns: 1fr auto; align-items: end; }
   .galeria { grid-template-columns: repeat(4, 1fr); }
